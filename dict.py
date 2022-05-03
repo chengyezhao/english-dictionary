@@ -56,14 +56,14 @@ def print_ww_detail(word):
         print(tab)
         # play voice
         # print(w)
-        file = "./cache/" + word + ".mp3"
-        if not exists(file) and cols_dict[word]["ph_am_mp3"] != "":
-            urllib.request.urlretrieve(cols_dict[word]["ph_am_mp3"], file)
-        os.system("afplay " + file)
-        try:
-            playsound("word.mp3")
-        except:
-            pass
+        #file = "./cache/" + word + ".mp3"
+       # if not exists(file) and cols_dict[word]["ph_am_mp3"] != "":
+        #    urllib.request.urlretrieve(cols_dict[word]["ph_am_mp3"], file)
+        #os.system("afplay " + file)
+        #try:
+        #    playsound("word.mp3")
+        #except:
+        #    pass
         # 保存到查询记录
         save_search(word)
     else:
@@ -180,12 +180,11 @@ def print_detail(details):
 
 
 if __name__ == "__main__":
-    print("q quit, h show history, a show related words")
-    print("q 退出, h 显示历史, a 显示相关词")
+    print("输入单词后回车, q 退出, h 显示历史, a 显示相关词")
     current_word = ""  # get_random_word()
     answers, answers_details = [], None  # get_answers(current_word)
     while True:
-        iput = input('waiting for word...> ')
+        iput = input('> ')
         if iput == "":
             continue
         if iput == "q":
