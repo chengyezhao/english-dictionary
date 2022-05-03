@@ -56,14 +56,14 @@ def print_ww_detail(word):
         print(tab)
         # play voice
         # print(w)
-        #file = "./cache/" + word + ".mp3"
-       # if not exists(file) and cols_dict[word]["ph_am_mp3"] != "":
-        #    urllib.request.urlretrieve(cols_dict[word]["ph_am_mp3"], file)
-        #os.system("afplay " + file)
-        #try:
-        #    playsound("word.mp3")
-        #except:
-        #    pass
+        file = "./cache/" + word + ".mp3"
+        if not exists(file) and cols_dict[word]["ph_am_mp3"] != "":
+            urllib.request.urlretrieve(cols_dict[word]["ph_am_mp3"], file)
+        os.system("afplay " + file)
+        try:
+            playsound("word.mp3")
+        except:
+            pass
         # 保存到查询记录
         save_search(word)
     else:
