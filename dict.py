@@ -26,6 +26,30 @@ def print_ww(w):
     s = "\n".join([d["posp"] + " " + d["tran"] for d in w])
     print(s)
 
+def ishan(text):
+    return all(u'\u4e00' <= char <= u'\u9fff' for char in text)
+
+def find_chinese(chinese):
+    result = []
+    for word in cols_dict.keys():
+        if "collins" in cols_dict[word]:
+            flag = False
+            for definition in cols_dict[word]["collins"]:
+                if chinese in definition["tran"]:
+                    result.append(word)
+                    flag = True
+                    break
+                #             if "example" in definition:
+                #                 for example in definition["example"]:
+                #                     if chinese in example["tran"]:
+                #                         result.append(word)
+                #                         flag = True
+                #                         break
+                if flag:
+                    break
+        # break
+    result = sorted(result, key=lambda s: s.lower())
+    print(", ".join(result))
 
 def save_search(word):
     with open("search.txt", "a") as f:
@@ -180,7 +204,7 @@ def print_detail(details):
 
 
 if __name__ == "__main__":
-    print("输入单词后回车, q 退出, h 显示历史, a 显示相关词")
+    print("输入单词（英文或者中文）后回车, q 退出, h 显示历史, a 显示相关词")
     current_word = ""  # get_random_word()
     answers, answers_details = [], None  # get_answers(current_word)
     while True:
@@ -196,6 +220,9 @@ if __name__ == "__main__":
         if iput == 'h':
             print(word_history)
             #print("Total Score " + str(score))
+            continue
+        if ishan(iput):
+            find_chinese(iput)
             continue
         if len(iput) != 1:
             # print_ww_detail(cols_dict[iput[1:]]["collins"] )
