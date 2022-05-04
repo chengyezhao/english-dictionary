@@ -48,6 +48,11 @@ def find_chinese(chinese):
                 if flag:
                     break
         # break
+    if len(result) == 0:
+        for word in word_min400k_dict.keys():
+            if word not in result:
+                if chinese in word_min400k_dict[word]:
+                    result.append(word)
     result = sorted(result, key=lambda s: s.lower())
     print(", ".join(result))
 
@@ -120,9 +125,10 @@ def get_answers(w):
         result1 = sorted(result1)
     # 相似词
     result2 = []
-    for ww in word_similar_relation[w]:
-        result2.append(ww)
-    result2 = sorted(result2)
+    if w in word_similar_relation:
+        for ww in word_similar_relation[w]:
+            result2.append(ww)
+        result2 = sorted(result2)
     # 反向关系词
     result3 = []
     if w in word_reverse_relation:
@@ -208,7 +214,7 @@ if __name__ == "__main__":
     current_word = ""  # get_random_word()
     answers, answers_details = [], None  # get_answers(current_word)
     while True:
-        iput = input('> ')
+        iput = input('输入> ')
         if iput == "":
             continue
         if iput == "q":
