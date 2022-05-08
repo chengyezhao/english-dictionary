@@ -221,7 +221,7 @@ def find_distance_similar(word):
 def search_for_similar(word):
     result = []
     for w in cols_dict.keys():
-        if w != word and LevenshteinDistance(w,word) <= 2:
+        if w != word and (w.startswith(word) or LevenshteinDistance(w,word) <= 2):
             result.append(w)
     return result
 
@@ -244,7 +244,7 @@ def print_detail(details):
 
 
 if __name__ == "__main__":
-    print("输入单词（英文或者中文）后回车, q 退出, h 显示历史, a 显示相关词")
+    print("输入单词（英文或者中文）后回车, q 退出, h 显示历史, a 显示相关词, ?单词 查询单词的相近单词")
     current_word = ""  # get_random_word()
     answers, answers_details = [], None  # get_answers(current_word)
     while True:
@@ -264,13 +264,17 @@ if __name__ == "__main__":
         if ishan(iput):
             find_chinese(iput)
             continue
+        if iput[0] == "?":
+            similar_words = search_for_similar(iput[1:])
+            print(", ".join(similar_words))
+            continue
         if len(iput) != 1:
             # print_ww_detail(cols_dict[iput[1:]]["collins"] )
             if  print_ww_detail(iput):
                 current_word = iput
                 word_history.append(current_word)
             else:
-                similar_words = search_for_similar(iput)
+                similar_words = search_for_similar(iput[1:])
                 print(", ".join(similar_words))
 
 
