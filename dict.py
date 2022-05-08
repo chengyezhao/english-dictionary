@@ -221,7 +221,7 @@ def find_distance_similar(word):
 def search_for_similar(word):
     result = []
     for w in cols_dict.keys():
-        if w != word and (w.startswith(word) or LevenshteinDistance(w,word) <= 2):
+        if w != word and (w.startswith(word) or LevenshteinDistance(w,word) <= min(2, len(word) / 3)):
             result.append(w)
     return result
 
