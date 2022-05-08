@@ -95,15 +95,19 @@ def print_ww_detail(word):
             pass
         # 保存到查询记录
         save_search(word)
+        return True
     else:
         if word in word_defition_complete:
             print(word_defition_complete[word])
             # 保存到查询记录
             save_search(word)
+            return True
         elif word in word_min400k_dict:
             print(word_min400k_dict[word])
             # 保存到查询记录
             save_search(word)
+            return True
+    return False
 
 
 def get_random_word():
@@ -179,6 +183,29 @@ def edit_distance(s, t):
             prefix_matrix[i, j] = min(insertion, deletion, match)
     return int(prefix_matrix[i, j])
 
+def LevenshteinDistance(s, t):
+    v0 = []
+    v1 = []
+    n = len(t)
+    m = len(s)
+    for i in range(0, n+1):
+        v0.append(i)
+        v1.append(0)
+    for i in range(0, m):
+        v1[0] = i + 1
+        for j in range(0, n):
+            deletionCost = v0[j+1] + 1
+            insertionCost = v1[j] + 1
+            if s[i] == t[j]:
+                substitutionCost = v0[j]
+            else:
+                substitutionCost = v0[j] + 1
+            v1[j+1] = min(deletionCost, min(insertionCost, substitutionCost))
+        for j in range(0, n + 1):
+            temp = v0[j]
+            v0[j] = v1[j]
+            v1[j] = temp
+    return v0[n]
 
 def find_distance_similar(word):
     result = []
@@ -189,6 +216,13 @@ def find_distance_similar(word):
             result.append(w)
         if len(result) > 20:
             break
+    return result
+
+def search_for_similar(word):
+    result = []
+    for w in cols_dict.keys():
+        if w != word and LevenshteinDistance(w,word) <= 2:
+            result.append(w)
     return result
 
 
@@ -232,9 +266,12 @@ if __name__ == "__main__":
             continue
         if len(iput) != 1:
             # print_ww_detail(cols_dict[iput[1:]]["collins"] )
-            print_ww_detail(iput)
-            current_word = iput
-            word_history.append(current_word)
+            if  print_ww_detail(iput):
+                current_word = iput
+                word_history.append(current_word)
+            else:
+                similar_words = search_for_similar(iput)
+                print(", ".join(similar_words))
 
 
 
